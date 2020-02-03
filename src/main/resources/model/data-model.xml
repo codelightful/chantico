@@ -1,0 +1,3 @@
+<persistence>
+    <object name="chantico_users"/>
+</persistence>

@@ -1,0 +1,6 @@
+<object name="chantico_users">
+    <field name="user_id" type="IDENTITY" nullable="false"/>
+    <field name="user_email" type="VARCHAR(20)" nullable="false"/>
+    <field name="user_name" type="VARCHAR(100)" nullable="false"/>
+    <field name="user_password" type="VARCHAR(300)" nullable="false"/>
+</object>

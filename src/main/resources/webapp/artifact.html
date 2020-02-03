@@ -1,0 +1,85 @@
+<div class="main-content columns">
+	<div class="column">
+		<div class="columns">
+			<div class="column">
+				<nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+					<ul>
+						<li><a href="./index.html">
+							<div class="title is-5">Repositories</div>
+						</a></li>
+						<li><a href="./repository.html?id=47854785734857348">
+							<div class="title is-5">Master</div>
+						</a></li>
+						<li class="is-active"><a href="#" aria-current="page">
+							<div id="lblArtifactName" class="title is-5"></div>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!-- div class="column is-narrow data-dependent" -->
+				<!-- TODO: implement -->
+				<!-- button class="button">Evict</button -->
+			<!-- /div -->
+		</div>
+
+		<div class="columns data-dependent">
+			<div class="column">
+				<div class="title is-6">Versions</div>
+			</div>
+		</div>
+		<div id="divVersionList"></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function () {
+		var versionList = $('#divVersionList');
+		Chantico.menu();
+
+		function errorMessage(artifactLabel) {
+			$('#lblArtifactName').html(artifactLabel);
+			$('.data-dependent').hide();
+			versionList.html('<div class="notification is-danger">The requested artifact was not found</div>');
+		}
+		
+		if(typeof(requestParams) === 'undefined' || !requestParams) {
+			console.error('No parameters has been received');
+			errorMessage('Error');
+		} else if(!requestParams.id) {
+			console.error('No artifact id has been received');
+			errorMessage('Unknown');
+		} else {
+			Chantico.getArtifact(requestParams.id).then(function (repoData) {
+				if(!repoData) {
+					errorMessage('Not Found');
+					return;
+				}
+				$('#lblArtifactName').html(repoData.artifact.group + ':' + repoData.artifact.artifact);
+
+				if(repoData.versions.length == 0) {
+					versionList.html('<div class="notification">No versions found</div>');
+					return;
+				}
+				for (var idx = 0; idx < repoData.versions.length; idx++) {
+					var version = repoData.versions[idx];
+					var row = $('<div class="notification selectable-row"></div>');
+					var columns = $('<div class="columns"></div>');
+					var column = $('<div class="column"><i class="las la-tag"></i></div>');
+					column.append('<span class="tags has-addons version-tag"><span class="tag is-primary is-medium">Version</span><span class="tag is-dark is-medium">' + version.label + '</span>');
+					column.append(Chantico.labeledValue('Release date', new Date(version.release)));
+					column.append(Chantico.labeledValue('Publisher', version.user));
+					column.appendTo(columns);
+					column = $('<div class="column is-narrow"></div>');
+					var button = $('<button class="button">Evict</button>');
+					button.click(function() {
+						// FIXME: implement confirm
+					});
+					column.append(button);
+					column.appendTo(columns)
+					columns.appendTo(row);
+					versionList.append(row);
+				}
+			});
+		}
+	});
+</script>

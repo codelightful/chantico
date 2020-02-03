@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+group 'org.codelightful.chantico'
+version '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'org.codelightful.chantico.Chantico'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+dependencies {
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:8.5.50'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-logging-juli:8.5.2'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.50'
+    implementation 'org.apache.tomcat:tomcat-jasper:8.5.50'
+    implementation 'org.glassfish.jersey.core:jersey-client:2.30'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
+    implementation 'com.h2database:h2:1.4.200'
+implementation 'org.codelightful:harpo:1.0'
+
+    testImplementation 'org.testng:testng:7.1.0'
+}
+
+test {
+    useTestNG()
+}

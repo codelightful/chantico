@@ -1,0 +1,93 @@
+<div class="main-content columns">
+	<div class="column">
+		<div class="columns">
+			<div class="column">
+				<nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+					<ul>
+						<li><a href="./index.html">
+							<div class="title is-5">Repositories</div>
+						</a></li>
+						<li class="is-active"><a href="#" aria-current="page">
+							<div id="lblRepoName" class="title is-5"></div>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="column is-narrow data-dependent">
+				<button class="button">Delete</button>
+			</div>
+		</div>
+		<div id="divRepoCard" class="data-dependent" style="margin-bottom: 10px; margin-top: -10px;"></div>
+
+		<div class="columns data-dependent">
+			<div class="column">
+				<div class="title is-6">Artifacts</div>
+			</div>
+			<!-- div class="column is-narrow" -->
+				<!-- TODO: implement -->
+				<!-- button class="button">Evict All</button -->
+				<!-- TODO: implement -->
+				<!-- button class="button">Evict Cached</button -->
+			<!-- /div -->
+		</div>
+		<div id="divArtifactList"></div>
+	</div>
+
+	<div class="column is-narrow" style="min-width: 350px;">
+		<div class="title is-5">Recent activity</div>
+		<div id="divRecentList" class="content is-small">
+			<div class="notification">No recent activity</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function () {
+		var artifactList = $('#divArtifactList');
+
+		function createArtifactRow(artifactData) {
+			var row = $('<div class="notification selectable-row"><i class="las la-shapes"></i></div>');
+			row.append(Chantico.labeledValue('Group', artifactData.group).css('width', '150px'));
+			row.append(Chantico.labeledValue('Artifact', artifactData.artifact).css('width', '150px'));
+			row.append(Chantico.labeledValue('Latest Version', artifactData.latest).css('width', '150px'));
+			row.append(Chantico.labeledValue('Cached', Chantico.asToggle(artifactData.cached)));
+			row.click(function () {
+				window.location.href = './artifact.html?id=' + artifactData.id;
+			});
+			return row;
+		}
+
+		function errorMessage(repoLabel) {
+			$('#lblRepoName').html(repoLabel);
+			$('.data-dependent').hide();
+			artifactList.html('<div class="notification is-danger">The requested repository was not found</div>');
+		}
+
+		Chantico.menu();
+		if(typeof(requestParams) === 'undefined' || !requestParams) {
+			console.error('No parameters has been received');
+			errorMessage('Error');
+		} else if(!requestParams.id) {
+			console.error('No repository id has been received');
+			errorMessage('Unknown');
+		} else {
+			Chantico.getRepository(requestParams.id).then(function (repoData) {
+				if(!repoData) {
+					errorMessage('Not Found');
+					return;
+				}
+				$('#lblRepoName').html(repoData.repo.name);
+				Chantico.renderRecentList('#divRecentList', repoData.activity);
+
+				var repoCard = $('#divRepoCard');
+				repoCard.append(Chantico.labeledValue('Proxy', Chantico.asToggle(repoData.repo.proxy)));
+				repoCard.append(Chantico.labeledValue('Cache', Chantico.asToggle(repoData.repo.cache)));
+				repoCard.append(Chantico.labeledValue('Name', repoData.repo.name).css('width', '300px'));
+
+				for (var idx = 0; idx < repoData.artifacts.length; idx++) {
+					artifactList.append(createArtifactRow(repoData.artifacts[idx]));
+				}
+			});
+		}
+	});
+</script>

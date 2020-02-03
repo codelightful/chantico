@@ -1,0 +1,193 @@
+HTML, BODY {
+    height: 100%;
+}
+
+BODY {
+	background-color: #ffffff;
+}
+
+.main-content {
+	padding-left: 80px; 
+	padding-top: 10px; 
+	padding-bottom: 10px; 
+	padding-right: 15px;
+	max-width: 1600px;
+}
+
+.right-aligned {
+    text-align: right;
+}
+
+.toast-container {
+	position: absolute;
+	top: -10px;
+	left: 0;
+	width: 100%;
+	height: 10px;
+	padding: 10px;
+}
+
+.toast {
+	margin: 0 auto;
+	width: 60%;
+	min-width: 300px;
+	display: none;
+}
+.toast:first-child {
+	margin-top: 20px;
+}
+
+.box .title, .box .subtitle {
+	color: #000000 !important;
+} 
+
+.notification {
+	vertical-align: middle;
+}
+.notification .las {
+	font-size: 2rem;
+	line-height: 3rem;
+}
+.labeled-value {
+	vertical-align: bottom;
+	display: inline-block;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.labeled-value .label {
+	font-size: 0.75rem;
+	font-weight: bolder;
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+.labeled-value > .value {
+	height: 34px;
+	vertical-align: bottom;
+}
+.labeled-value > .value > .las {
+	font-size: 2rem;
+}
+.labeled-value > .value > .la-toggle-on {
+	color: #26A65B;
+}
+.labeled-value > .value > .la-toggle-off {
+	color: #DB5A6B;
+}
+
+.selectable-row {
+	cursor: pointer;
+	user-select: none;
+}
+.selectable-row:hover, .notification.highlighted {
+	background-color: #a3ebe0;
+}
+
+.is-dark .label {
+	color: #ffffff;
+}
+
+.main-menu {
+	background: #ececec;
+	border-right: 1px solid #e5e5e5;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	height: 100%;
+	width: 60px;
+	overflow: hidden;
+	-webkit-box-shadow: 3px 0px 15px -5px rgba(0,0,0,0.75);
+	-moz-box-shadow: 3px 0px 15px -5px rgba(0,0,0,0.75);
+	box-shadow: 3px 0px 15px -5px rgba(0,0,0,0.75);
+	-webkit-transition: width .1s linear;
+	-webkit-transform: translateZ(0) scale(1,1);
+	transition: width .1s linear;
+	z-index:1000;
+}
+.main-menu:hover {
+	width: 250px;
+	overflow: visible;
+}
+
+.main-menu > ul {
+	margin: 5px 0;
+}
+
+.main-menu li {
+	position: relative;
+	display: block;
+	width: 250px;
+}
+
+.main-menu li > a {
+	position: relative;
+	display: table;
+	border-collapse: collapse;
+	border-spacing: 0;
+	color: #383838;
+	text-decoration: none;
+	-webkit-transform: translateZ(0) scale(1,1);
+	-webkit-transition: all .3s linear;
+	transition: all .3s linear; 
+}
+
+.main-menu .las {
+	position: relative;
+	display: table-cell;
+	width: 60px;
+	height: 36px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 1.5rem;
+}
+
+.main-menu .nav-text {
+	position: relative;
+	display: table-cell;
+	vertical-align: middle;
+	width: 190px;
+  	font-family: 'Titillium Web', sans-serif;
+}
+
+.main-menu > ul.bottom {
+	position:absolute;
+	left: 0;
+	bottom: 0;
+}
+
+nav {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+nav ul, nav li {
+	outline: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.main-menu li:hover > a {
+	color:#fff;
+	background-color:#575757;
+}
+
+.notification.artifact {
+	padding: 10px;
+}
+.notification.artifact > .tags {
+	margin-top: 5px;
+	margin-bottom: 0 !important;
+}
+.notification.artifact > .tag {
+	margin-bottom: 0;
+}
+
+.version-tag {
+	display: inline-block;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 0 !important;
+}

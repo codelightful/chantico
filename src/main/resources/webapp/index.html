@@ -1,0 +1,49 @@
+<div class="main-content columns">
+	<div class="column">
+		<div class="columns">
+			<div class="column">
+				<div class="title is-5">Repositories</div>
+			</div>
+			<div class="column is-narrow">
+				<button class="button is-primary">Add New Repository</button>
+			</div>
+		</div>
+		<div id="divRepositoryList"></div>
+	</div>
+
+	<div class="column is-narrow" style="min-width: 350px;">
+		<div class="title is-5">Recent activity</div>
+		<div id="divRecentList" class="content is-small"></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function () {
+		function createRepoRow(repoData) {
+			var row = $('<div class="notification selectable-row"><i class="las la-box"></i></div>');
+			row.append(Chantico.labeledValue('Name', repoData.name).css('width', '300px'));
+			row.append(Chantico.labeledValue('Artifacts', repoData.artifacts));
+			row.append(Chantico.labeledValue('Proxy', Chantico.asToggle(repoData.proxy)));
+			row.append(Chantico.labeledValue('Cache', Chantico.asToggle(repoData.cache)));
+			row.click(function () {
+				window.location.href = './repository.html?id=' + repoData.id;
+			});
+			return row;
+		}
+
+		Chantico.menu();
+		Chantico.getRepositories().then(function (repoList) {
+			var container = $('#divRepositoryList');
+			if(!repoList || repoList.length == 0) {
+				container.html('<div class="notification">No repositories defined</div>');
+				return;
+			}
+
+			for (var idx = 0; idx < repoList.length; idx++) {
+				container.append(createRepoRow(repoList[idx]));
+			}
+			return ;
+		});
+		Chantico.getRecentActivity('#divRecentList');
+	});
+</script>

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Chantico Server</title>
+	<link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="./libs/bulma/bulma.min.css">
+	<link rel="stylesheet" href="./libs/line-awesome/css/line-awesome.min.css">
+	<link rel="stylesheet" href="./css/chantico.css">
+	<script type="text/javascript" src="./libs/jquery/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="./libs/rsvp/rsvp.min.js"></script>
+	<script type="text/javascript" src="./js/chantico.js"></script>
+</head>
+<body>
+
+<div class="columns" style="padding-left: 80px; padding-top: 10px; padding-bottom: 10px; padding-right: 15px;">
+	<div class="column">
+		<div class="columns">
+			<div class="column">
+				<nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+					<ul>
+						<li><a href="#"><div class="title is-5">Repositories</div></a></li>
+						<li class="is-active"><a href="#" aria-current="page"><div class="title is-5">Master</div></a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="column is-narrow">
+				<button class="button">Delete</button>
+			</div>
+		</div>
+		<div id="divRepoCard" style="margin-bottom: 10px; margin-top: -10px;"></div>
+
+		<div class="columns">
+			<div class="column">
+				<div class="title is-6">Artifacts</div>
+			</div>
+			<div class="column is-narrow">
+				<button class="button">Evict All</button>
+				<button class="button">Evict Cached</button>
+			</div>
+		</div>
+		<div id="divArtifactList"></div>
+	</div>
+
+	<div class="column is-narrow" style="min-width: 350px;">
+		<div class="title is-5">Recent activity</div>
+		<div id="divRecentList" class="content is-small"></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function () {
+		function createArtifactRow(artifactData) {
+			var row = $('<div class="notification selectable-row"><i class="las la-shapes"></i></div>');
+			row.append(Chantico.labeledValue('Group', artifactData.group).css('width', '150px'));
+			row.append(Chantico.labeledValue('Artifact', artifactData.artifact).css('width', '150px'));
+			row.append(Chantico.labeledValue('Latest Version', artifactData.latest).css('width', '150px'));
+			row.append(Chantico.labeledValue('Cached', Chantico.asToggle(artifactData.cached)));
+			row.click(function () {
+			});
+			return row;
+		}
+
+		Chantico.menu().then(function () {
+			return Chantico.getRepository();
+		}).then(function(repoData) {
+			Chantico.renderRecentList('#divRecentList', repoData.activity);
+
+			var repoCard = $('#divRepoCard');
+			repoCard.append(Chantico.labeledValue('Proxy', Chantico.asToggle(repoData.repo.proxy)));
+			repoCard.append(Chantico.labeledValue('Cache', Chantico.asToggle(repoData.repo.cache)));
+			repoCard.append(Chantico.labeledValue('Name', repoData.repo.name).css('width', '300px'));
+
+			var artifactList = $('#divArtifactList');
+			for (var idx = 0; idx < repoData.artifacts.length; idx++) {
+				artifactList.append(createArtifactRow(repoData.artifacts[idx]));
+			}
+		});
+	});
+</script>
+
+</body>
+</html>
